@@ -54,7 +54,7 @@ def parse_file( fname, edges, transform, screen, color ):
     f = open(fname)
     lines = f.readlines()
 
-    step = 0.01
+    step = 0.001
 
     c = 0
     while c < len(lines):
@@ -75,6 +75,12 @@ def parse_file( fname, edges, transform, screen, color ):
 
         elif line == 'clear':
             edges = new_matrix()
+            
+        elif line == 'sphere':
+            add_sphere(edges, float(args[0]), float(args[1]), float(args[2]), float(args[3]), step)
+        
+        elif line == 'torus':
+            add_torus(edges, float(args[0]), float(args[1]), float(args[2]), float(args[3]), float(args[4]), step)
 
         elif line == 'hermite' or line == 'bezier':
             #print 'curve\t' + line + ": " + str(args)
@@ -123,10 +129,11 @@ def parse_file( fname, edges, transform, screen, color ):
         elif line == 'display' or line == 'save':
             clear_screen(screen)
             draw_lines(edges, screen, color)
+            print(args[0], type(args[0]))
 
             if line == 'display':
                 display(screen)
             else:
-                save_extension(screen, args[0])
+                save_ppm(screen, args[0])
             
         c+= 1

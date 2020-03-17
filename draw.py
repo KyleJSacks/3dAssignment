@@ -1,5 +1,6 @@
 from display import *
 from matrix import *
+from math import *
 
   # ====================
   # add the points for a rectagular prism whose 
@@ -35,8 +36,17 @@ def add_box( points, x, y, z, width, height, depth ):
   # Returns a matrix of those points
   # ====================
 def generate_sphere( points, cx, cy, cz, r, step ):
-    pass
-
+    rot = 0
+    circ = 0
+    while (rot <= 1):
+        while (circ <= 1):
+            x = r * cos(2 * pi * circ) + cx
+            y = r * sin(2 * pi * circ) * cos(pi * rot) + cy
+            z = r * sin(2 * pi * circ) * sin(pi * rot) + cz
+            add_point(points, x, y, z)
+            circ += step
+        rot += step
+        circ = 0
   # ====================
   # adds all the points for a sphere with center 
   # (cx, cy, cz) and radius r to points
@@ -44,7 +54,11 @@ def generate_sphere( points, cx, cy, cz, r, step ):
   # necessary points
   # ====================
 def add_sphere( points, cx, cy, cz, r, step ):
-    pass
+    npoints = []
+    generate_sphere(npoints, cx, cy, cz, r, step)
+    for point in npoints:
+        add_edge(points, point[0], point[1], point[2], point[0], point[1], point[2])
+    
 
 
   # ====================
@@ -54,7 +68,17 @@ def add_sphere( points, cx, cy, cz, r, step ):
   # Returns a matrix of those points
   # ====================
 def generate_torus( points, cx, cy, cz, r0, r1, step ):
-    pass
+    rot = 0
+    circ = 0
+    while (rot <= 1):
+        while (circ <= 1):
+            x = cos(2 * pi * rot) * (r0 * cos(2 * pi * circ) + r1) + cx
+            y = r0 * sin(2 * pi * circ) + cy
+            z = -sin(2 * pi * rot) * (r0 * cos(2 * pi * circ) + r1) + cz
+            add_point(points, x, y, z)
+            circ += step
+        rot += step
+        circ = 0
 
   # ====================
   # adds all the points for a torus with center
@@ -63,8 +87,10 @@ def generate_torus( points, cx, cy, cz, r0, r1, step ):
   # necessary points
   # ====================
 def add_torus( points, cx, cy, cz, r0, r1, step ):
-    pass
-
+    npoints = []
+    generate_torus(npoints, cx, cy, cz, r0, r1, step)
+    for point in npoints:
+        add_edge(points, point[0], point[1], point[2], point[0], point[1], point[2])
 
 
 def add_circle( points, cx, cy, cz, r, step ):
@@ -126,7 +152,6 @@ def add_point( matrix, x, y, z=0 ):
 
 
 def draw_line( x0, y0, x1, y1, screen, color ):
-
     #swap points if going right -> left
     if x0 > x1:
         xt = x0
